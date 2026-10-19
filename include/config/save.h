@@ -2,7 +2,7 @@
 #define GUARD_CONFIG_SAVE_H
 
 // Menu configs
-#define SKIP_SAVE_CONFIRMATION              FALSE   // If TRUE, skips the "There is already a saved file" confirmation when overwriting a save.
+#define SKIP_SAVE_CONFIRMATION              TRUE   // If TRUE, skips the "There is already a saved file" confirmation when overwriting a save.
 
 // SaveBlock1 configs
 #define FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK1    FALSE   // Free up unused Pokédex seen flags (52 bytes).
@@ -13,11 +13,11 @@
 #define FREE_UNION_ROOM_CHAT                FALSE   // Frees up union room chat (212 bytes).
 #define FREE_ENIGMA_BERRY                   FALSE   // Frees up E-Reader Enigma Berry data (52 bytes).
 #define FREE_LINK_BATTLE_RECORDS            FALSE   // Frees up link battle record data (88 bytes).
-#define FREE_MYSTERY_GIFT                   FALSE   // Frees up Mystery Gift data (876 bytes).
+#define FREE_MYSTERY_GIFT                   TRUE    // Frees up Mystery Gift data (876 bytes).
                                             // SaveBlock1 total: 2516 bytes
 // SaveBlock2 configs
-#define FREE_BATTLE_TOWER_E_READER          FALSE   // Frees up Battle Tower E-Reader data (188 bytes).
-#define FREE_POKEMON_JUMP                   FALSE   // Frees up Pokémon Jump data (16 bytes).
+#define FREE_BATTLE_TOWER_E_READER          TRUE    // Frees up Battle Tower E-Reader data (188 bytes).
+#define FREE_POKEMON_JUMP                   TRUE   // Frees up Pokémon Jump data (16 bytes).
 #define FREE_RECORD_MIXING_HALL_RECORDS     FALSE   // Frees up hall records for record mixing (1032 bytes).
 #define FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK2    FALSE   // Free up unused Pokédex seen flags (108 bytes).
                                             // SaveBlock2 total: 1274 bytes
