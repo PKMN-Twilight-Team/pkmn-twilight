@@ -256,6 +256,13 @@ gScriptCmdTable::
 	script_cmd_table_entry SCR_OP_QUESTMENU						ScrCmd_questmenu,					requests_effects=1  @ 0xe7
 	script_cmd_table_entry SCR_OP_SUBQUESTMENU					ScrCmd_subquestmenu,				requests_effects=1  @ 0xe8
 	script_cmd_table_entry SCR_OP_RETURNQUESTSTATE				ScrCmd_returnqueststate,			requests_effects=1  @ 0xe9
+	script_cmd_table_entry SCR_OP_UNLOCKLEAGUECARD              ScrCmd_unlockleaguecard,            requests_effects=1  @ 0xea
+	script_cmd_table_entry SCR_OP_LOCKLEAGUECARD                ScrCmd_lockleaguecard,              requests_effects=1  @ 0xeb
+	script_cmd_table_entry SCR_OP_LEARNLEAGUEFACT               ScrCmd_learnleaguefact,             requests_effects=1  @ 0xec
+	script_cmd_table_entry SCR_OP_FORGETLEAGUEFACT              ScrCmd_forgetleaguefact,            requests_effects=1  @ 0xed
+	script_cmd_table_entry SCR_OP_CHECKLEAGUECARD               ScrCmd_checkleaguecard,             requests_effects=1  @ 0xee
+	script_cmd_table_entry SCR_OP_CHECKLEAGUEFACT               ScrCmd_checkleaguefact,             requests_effects=1  @ 0xef
+	script_cmd_table_entry SCR_OP_OPENLEAGUECARDS               ScrCmd_openleaguecards,             requests_effects=1  @ 0xf0
 
 	.if ALLOCATE_SCRIPT_CMD_TABLE
 gScriptCmdTableEnd::

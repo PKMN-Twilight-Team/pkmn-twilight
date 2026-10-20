@@ -3164,3 +3164,71 @@
 	subquestmenu QUEST_MENU_CHECK_COMPLETE \parent \child
 	call_if_eq VAR_RESULT, FALSE, \dest
 	.endm
+
+	@ League Cards. See docs/tutorials/how_to_league_cards.md.
+	@ 'card' is a LEAGUE_CARD_* constant or a var; 'fact' is a fact index (0-5) or a var.
+
+	@ Adds a trainer's card to the Card Case. Facts learned earlier become visible.
+	.macro unlockleaguecard card:req
+	.byte SCR_OP_UNLOCKLEAGUECARD
+	.2byte \card
+	.endm
+
+	@ Removes a card from the Card Case. Its facts are kept.
+	.macro lockleaguecard card:req
+	.byte SCR_OP_LOCKLEAGUECARD
+	.2byte \card
+	.endm
+
+	@ Reveals a fact. If the card is still locked the fact is stored silently.
+	@ Sets VAR_RESULT to TRUE if the fact is new and can be seen in the Card Case now.
+	.macro learnleaguefact card:req, fact:req
+	.byte SCR_OP_LEARNLEAGUEFACT
+	.2byte \card
+	.2byte \fact
+	.endm
+
+	@ Hides a fact again.
+	.macro forgetleaguefact card:req, fact:req
+	.byte SCR_OP_FORGETLEAGUEFACT
+	.2byte \card
+	.2byte \fact
+	.endm
+
+	@ Sets VAR_RESULT to TRUE if the card is unlocked.
+	.macro checkleaguecard card:req
+	.byte SCR_OP_CHECKLEAGUECARD
+	.2byte \card
+	.endm
+
+	@ Sets VAR_RESULT to TRUE if the fact has been learned (whether or not the card is unlocked).
+	.macro checkleaguefact card:req, fact:req
+	.byte SCR_OP_CHECKLEAGUEFACT
+	.2byte \card
+	.2byte \fact
+	.endm
+
+	@ Opens the Card Case. The script continues once it is closed.
+	.macro openleaguecards
+	.byte SCR_OP_OPENLEAGUECARDS
+	.endm
+
+	.macro goto_if_league_card_unlocked card:req, dest:req
+	checkleaguecard \card
+	goto_if_eq VAR_RESULT, TRUE, \dest
+	.endm
+
+	.macro goto_if_league_card_locked card:req, dest:req
+	checkleaguecard \card
+	goto_if_eq VAR_RESULT, FALSE, \dest
+	.endm
+
+	.macro goto_if_league_fact_known card:req, fact:req, dest:req
+	checkleaguefact \card, \fact
+	goto_if_eq VAR_RESULT, TRUE, \dest
+	.endm
+
+	.macro goto_if_league_fact_unknown card:req, fact:req, dest:req
+	checkleaguefact \card, \fact
+	goto_if_eq VAR_RESULT, FALSE, \dest
+	.endm

@@ -14304,6 +14304,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_PokeFlute,
     },
 
+    [ITEM_CARD_CASE] =
+    {
+        .name = ITEM_NAME("Card Case"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A case that holds\n"
+            "League Cards about\n"
+            "notable trainers."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CardCase,
+        .iconPic = gItemIcon_FameChecker, // Placeholder until the Card Case has its own icon.
+        .iconPalette = gItemIconPalette_FameChecker,
+    },
+
     [ITEM_FAME_CHECKER] =
     {
         .name = ITEM_NAME("Fame Checker"),

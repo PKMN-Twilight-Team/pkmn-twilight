@@ -28,6 +28,7 @@
 #include "config/save.h"
 // quest menu
 #include "constants/quests.h"
+#include "constants/league_cards.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -943,6 +944,16 @@ typedef union // 3b58
     u8 filler[0x40];
 } LilycoveLady;
 
+// One League Card. Bit n of each fact mask is fact n on the card's back.
+struct LeagueCardSave
+{
+    u16 knownFacts:LEAGUE_CARD_MAX_FACTS; // Facts the player has discovered, even while the card is locked.
+    u16 readFacts:LEAGUE_CARD_MAX_FACTS;  // Facts the player has opened in the Card Case.
+    u16 unlocked:1;
+    u16 viewed:1;                         // The card has been looked at since it was unlocked.
+    u16 padding:2;
+};
+
 struct WaldaPhrase
 {
     u16 colors[2]; // Background, foreground.
@@ -1219,6 +1230,7 @@ struct SaveBlock1
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     struct DaycareMon route5DayCareMon;
 #endif
+    struct LeagueCardSave leagueCards[LEAGUE_CARD_SAVE_SLOTS];
     // sizeof: 0x3???
 };
 

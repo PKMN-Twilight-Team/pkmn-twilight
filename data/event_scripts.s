@@ -76,6 +76,7 @@
 #include "constants/weather.h"
 #include "constants/speaker_names.h"
 #include "constants/quests.h"
+#include "constants/league_cards.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"

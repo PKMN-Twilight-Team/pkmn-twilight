@@ -277,6 +277,142 @@
                     "max_width": 80
                 }
             ]
+        },
+        {
+            "comment": "League Cards. The limits below mirror test/league_cards.c and the layout in src/league_cards.c.",
+            "files": [
+                "src/data/league_cards.h"
+            ],
+            "keys": [
+                "sLeagueCards[*].name"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_NORMAL",
+                    "max_width": 54
+                }
+            ],
+            "max_lines": 1
+        },
+        {
+            "files": [
+                "src/data/league_cards.h"
+            ],
+            "keys": [
+                "sLeagueCards[*].title"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_SMALL",
+                    "max_width": 54
+                }
+            ],
+            "max_lines": 2
+        },
+        {
+            "files": [
+                "src/data/league_cards.h"
+            ],
+            "keys": [
+                "*Facts[*].label"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_SMALL",
+                    "max_width": 56
+                }
+            ],
+            "max_lines": 1
+        },
+        {
+            "files": [
+                "src/data/league_cards.h"
+            ],
+            "keys": [
+                "*Facts[*].text"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_NORMAL",
+                    "max_width": 208
+                }
+            ],
+            "max_lines": 2
+        },
+        {
+            "files": [
+                "src/league_cards.c"
+            ],
+            "keys": [
+                "sText_Title"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_NORMAL",
+                    "max_width": 92
+                }
+            ],
+            "max_lines": 1
+        },
+        {
+            "files": [
+                "src/league_cards.c"
+            ],
+            "keys": [
+                "sText_Help*"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_SMALL",
+                    "max_width": 136
+                }
+            ],
+            "max_lines": 1
+        },
+        {
+            "files": [
+                "src/league_cards.c"
+            ],
+            "keys": [
+                "sText_Hint*"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_NORMAL",
+                    "max_width": 208
+                }
+            ],
+            "max_lines": 2
+        },
+        {
+            "files": [
+                "src/league_cards.c"
+            ],
+            "keys": [
+                "sText_UnknownFact"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_SMALL",
+                    "max_width": 56
+                }
+            ],
+            "max_lines": 1
+        },
+        {
+            "files": [
+                "src/league_cards.c"
+            ],
+            "keys": [
+                "sText_FactCount"
+            ],
+            "checks": [
+                {
+                    "font": "FONT_SMALL",
+                    "max_width": 54
+                }
+            ],
+            "max_lines": 1
         }
     ],
     "skip": {
