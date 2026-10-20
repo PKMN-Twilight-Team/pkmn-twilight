@@ -62,6 +62,7 @@ SECTIONS {
         *libc.a:*.o(.text*);
         *libnosys.a:*.o(.text*);
         asm/*.o(.text*);
+        src/quests.o(.text);
         KEEP(*.o(.text.consts));
         *.o(.text*);
         *.o(.eh_frame);
@@ -86,6 +87,7 @@ SECTIONS {
         *libgcc.a:*.o(.rodata*);
         *libc.a:*.o(.rodata*);
         *libc.a:*.o(.data*);
+        src/quests.o(.rodata);
         sound/songs/*.o(.rodata);
     } > ROM =0
 
