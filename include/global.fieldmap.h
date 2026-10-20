@@ -159,7 +159,7 @@ struct __attribute__((packed, aligned(4))) ObjectEventTemplate
     };
     /*0x10*/ const u8 *script;
     /*0x14*/ u16 flagId;
-    /*0x16*/ u16 filler;
+    /*0x16*/ u16 questId; // ID of assigned quest, 0xFFFF = none
 }; // size = 0x18
 
 struct WarpEvent
@@ -309,6 +309,7 @@ struct ObjectEvent
              u8 directionOverwrite:4;
     /*0x21*/ u8 directionSequenceIndex;
     /*0x22*/ u8 playerCopyableMovement; // COPY_MOVE_*
+             u32 hasQuestIcon:1;
     /*0x23*/ u8 spriteId;
     /*size = 0x24*/
 };
