@@ -1,0 +1,12 @@
+key,context,max_width,en,es,pt,fr,status
+sText_Title,,,LEAGUE CARDS,,,,
+sText_HelpList,,,{DPAD_UPDOWN}Pick {A_BUTTON}Flip {B_BUTTON}Exit,,,,
+sText_HelpListPaged,,,{L_BUTTON}{R_BUTTON}Page {A_BUTTON}Flip {B_BUTTON}Exit,,,,
+sText_HelpBack,,,{DPAD_NONE}Pick {A_BUTTON}Read {B_BUTTON}Flip,,,,
+sText_HelpBackMulti,,,{L_BUTTON}{R_BUTTON}Card {A_BUTTON}Read {B_BUTTON}Flip,,,,
+sText_HelpMessage,,,{A_BUTTON}OK,,,,
+sText_HelpEmpty,,,{B_BUTTON}Exit,,,,
+sText_HintList,,,Which trainer's card will you\nlook at?,,,,
+sText_HintBack,,,Which fact will you read?,,,,
+sText_HintEmpty,,,There are no cards in the\nCard Case yet.,,,,
+sText_FactCount,,,Facts {DYNAMIC 0}/{DYNAMIC 1},,,,

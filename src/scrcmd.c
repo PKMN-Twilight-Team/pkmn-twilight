@@ -68,6 +68,7 @@
 #include "constants/map_types.h"
 #include "constants/party_menu.h"
 #include "quests.h"
+#include "league_cards.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -3505,5 +3506,88 @@ bool8 ScrCmd_subquestmenu(struct ScriptContext *ctx)
             break;
     }
 
+    return TRUE;
+}
+
+bool8 ScrCmd_unlockleaguecard(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    LeagueCard_Unlock(card);
+    return FALSE;
+}
+
+bool8 ScrCmd_lockleaguecard(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    LeagueCard_Lock(card);
+    return FALSE;
+}
+
+bool8 ScrCmd_learnleaguefact(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+    u32 fact = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    gSpecialVar_Result = LeagueCard_LearnFact(card, fact);
+    return FALSE;
+}
+
+bool8 ScrCmd_forgetleaguefact(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+    u32 fact = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    LeagueCard_ForgetFact(card, fact);
+    return FALSE;
+}
+
+bool8 ScrCmd_checkleaguecard(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1);
+
+    gSpecialVar_Result = LeagueCard_IsUnlocked(card);
+    return FALSE;
+}
+
+bool8 ScrCmd_checkleaguefact(struct ScriptContext *ctx)
+{
+    u32 card = VarGet(ScriptReadHalfword(ctx));
+    u32 fact = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1);
+
+    gSpecialVar_Result = LeagueCard_KnowsFact(card, fact);
+    return FALSE;
+}
+
+static void Task_OpenLeagueCardsFromScript(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        LeagueCards_Open(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        DestroyTask(taskId);
+    }
+}
+
+bool8 ScrCmd_openleaguecards(struct ScriptContext *ctx)
+{
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    FadeScreen(FADE_TO_BLACK, 0);
+    CreateTask(Task_OpenLeagueCardsFromScript, 0);
+    ScriptContext_Stop();
     return TRUE;
 }
