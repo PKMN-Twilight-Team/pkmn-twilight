@@ -115,28 +115,33 @@ is indexed by card ID. Each entry is 2 bytes:
 * `unlocked`
 * `viewed`: the card has been looked at since it was unlocked
 
-## Adding art
+## Art
 
-Until there is art, the screen is drawn in solid colours from the palettes in
-`src/league_cards.c`. Trainer portraits use the normal trainer front pics. To use
-real art:
-
-1. Add these files to `graphics/league_cards/`:
+The art is in `graphics/league_cards/` and is loaded by
+`src/data/league_cards_graphics.h`. Set `LEAGUE_CARDS_CUSTOM_GFX` at the top of
+`src/league_cards.c` to `FALSE` to draw the screen from solid colours instead.
+Trainer portraits use the normal trainer front pics.
 
 | File | Contents |
 |---|---|
-| `bg.png` + `bg.pal` | Background tiles, 16 colours. The first colour is the backdrop. |
-| `bg.bin` | 32x32 tilemap for the background (palette 0), e.g. made with Tilemap Studio |
-| `card_front.png` | Front of the card, 136x96 |
-| `card_back.png` | Back of the card, 136x96 |
-| `card.pal` | Palette shared by both card images |
+| `bg.png` + `bg.pal` | Background tiles. |
+| `bg.bin` | Background tilemap, palette 0. 30x20 (screen-sized) or 32x32. |
+| `card_front.png` | Front of the card, 136x96. |
+| `card_back.png` | Back of the card, 136x96. |
+| `card.pal` | Palette shared by both card images. |
 
-The card images sit behind the text and fact cells, so leave room for them.
-On the front, the name, title and fact count are at the left and the 64x64 portrait
-is at x=64, y=16. On the back, there is a 2x3 grid of fact cells.
+All PNGs must be **indexed** (16 colours or fewer). The build takes the pixel
+indices from the PNG and the colours from the `.pal`, so each `.pal` must list its
+colours in the same order as the PNG's palette. Colour 0 is always transparent:
+pixels with index 0 show what's behind them. The card images use this for their
+rounded corners.
+
+The card images sit behind the text and fact cells. On the front, the name, title
+and fact count are at the left and the 64x64 portrait is at x=64, y=16. On the back,
+there is a 2x3 grid of fact cells.
 
 The card palette is also used to draw text and the fact cells, so keep these
-indices:
+indices and draw the card art with 13-15:
 
 | Index | Use |
 |---|---|
@@ -150,20 +155,10 @@ indices:
 | 10 | locked fact |
 | 11 | selected fact border |
 | 12 | title text |
+| 13-15 | card art (cream front and beige back) |
 
-2. Create `src/data/league_cards_graphics.h`:
-
-```c
-// Art for the Card Case screen. Only used when LEAGUE_CARDS_CUSTOM_GFX is TRUE.
-static const u32 gLeagueCardsBg_Gfx[] = INCBIN_U32("graphics/league_cards/bg.4bpp");
-static const u32 gLeagueCardsBg_Tilemap[] = INCBIN_U32("graphics/league_cards/bg.bin");
-static const u16 gLeagueCardsBg_Pal[] = INCBIN_U16("graphics/league_cards/bg.gbapal");
-static const u32 gLeagueCards_FrontGfx[] = INCBIN_U32("graphics/league_cards/card_front.4bpp");
-static const u32 gLeagueCards_BackGfx[] = INCBIN_U32("graphics/league_cards/card_back.4bpp");
-static const u16 gLeagueCards_CardPal[] = INCBIN_U16("graphics/league_cards/card.gbapal");
-```
-
-3. Set `#define LEAGUE_CARDS_CUSTOM_GFX TRUE` at the top of `src/league_cards.c`.
+A `.pal` with fewer than 16 colours only replaces its first colours; the rest
+keep the built-in colours from `src/league_cards.c`.
 
 The Card Case uses the Fame Checker's item icon until it has its own: change
 `.iconPic` and `.iconPalette` under `[ITEM_CARD_CASE]` in `src/data/items.h`.

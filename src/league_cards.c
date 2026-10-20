@@ -31,10 +31,9 @@
 // the back, and each fact prints its text in the dialogue box.
 // See docs/tutorials/how_to_league_cards.md.
 
-// Set to TRUE once the art in graphics/league_cards/ exists, and create
-// src/data/league_cards_graphics.h as described in the tutorial. Until then the
-// screen is drawn from solid colours.
-#define LEAGUE_CARDS_CUSTOM_GFX FALSE
+// TRUE: use the art in graphics/league_cards/ (src/data/league_cards_graphics.h).
+// FALSE: draw the screen from solid colours instead.
+#define LEAGUE_CARDS_CUSTOM_GFX TRUE
 
 STATIC_ASSERT(LEAGUE_CARD_COUNT <= LEAGUE_CARD_SAVE_SLOTS, LeagueCardCountExceedsSaveSlots);
 STATIC_ASSERT(LEAGUE_CARD_COUNT <= 0xFF, LeagueCardCountTooLarge);
@@ -44,6 +43,8 @@ STATIC_ASSERT(LEAGUE_CARD_COUNT <= 0xFF, LeagueCardCountTooLarge);
 #if LEAGUE_CARDS_CUSTOM_GFX
 #include "data/league_cards_graphics.h"
 #endif
+
+#define SCREEN_TILEMAP_SIZE (DISPLAY_TILE_WIDTH * DISPLAY_TILE_HEIGHT * 2)
 
 //------------------------------------------------------------------------------
 // Save data
@@ -581,7 +582,17 @@ static void InitBackgroundsAndWindows(void)
 
 #if LEAGUE_CARDS_CUSTOM_GFX
     LoadBgTiles(BG_BACKDROP, gLeagueCardsBg_Gfx, sizeof(gLeagueCardsBg_Gfx), 0);
-    LoadBgTilemap(BG_BACKDROP, gLeagueCardsBg_Tilemap, sizeof(gLeagueCardsBg_Tilemap), 0);
+    if (sizeof(gLeagueCardsBg_Tilemap) == SCREEN_TILEMAP_SIZE)
+    {
+        // A screen-sized (30x20) tilemap is copied a row at a time into the 32-wide map.
+        u32 row;
+        for (row = 0; row < DISPLAY_TILE_HEIGHT; row++)
+            LoadBgTilemap(BG_BACKDROP, (const u16 *)gLeagueCardsBg_Tilemap + row * DISPLAY_TILE_WIDTH, DISPLAY_TILE_WIDTH * 2, row * 32);
+    }
+    else
+    {
+        LoadBgTilemap(BG_BACKDROP, gLeagueCardsBg_Tilemap, sizeof(gLeagueCardsBg_Tilemap), 0);
+    }
 #endif
 
     LoadMessageBoxGfx(WIN_MESSAGE, TILE_MESSAGE_BOX, BG_PLTT_ID(PAL_MESSAGE_BOX));
@@ -616,8 +627,11 @@ static void InitBackgroundsAndWindows(void)
 static void LoadPalettes(void)
 {
 #if LEAGUE_CARDS_CUSTOM_GFX
-    LoadPalette(gLeagueCardsBg_Pal, BG_PLTT_ID(PAL_BACKDROP), PLTT_SIZE_4BPP);
-    LoadPalette(gLeagueCards_CardPal, BG_PLTT_ID(PAL_CARD), PLTT_SIZE_4BPP);
+    // A short card palette only replaces its first colours, so the text and
+    // fact cell colours from sCardPalette stay available.
+    LoadPalette(sCardPalette, BG_PLTT_ID(PAL_CARD), sizeof(sCardPalette));
+    LoadPalette(gLeagueCardsBg_Pal, BG_PLTT_ID(PAL_BACKDROP), min(sizeof(gLeagueCardsBg_Pal), PLTT_SIZE_4BPP));
+    LoadPalette(gLeagueCards_CardPal, BG_PLTT_ID(PAL_CARD), min(sizeof(gLeagueCards_CardPal), PLTT_SIZE_4BPP));
 #else
     LoadPalette(sBackdropPalette, BG_PLTT_ID(PAL_BACKDROP), sizeof(sBackdropPalette));
     LoadPalette(sCardPalette, BG_PLTT_ID(PAL_CARD), sizeof(sCardPalette));
@@ -901,6 +915,8 @@ static void DrawCardFront(void)
     u8 known[4], total[4];
 
 #if LEAGUE_CARDS_CUSTOM_GFX
+    // The blit skips colour 0, so clear the other side out of the transparent parts first.
+    FillWindowPixelBuffer(WIN_CARD, PIXEL_FILL(CARD_COLOR_TRANSPARENT));
     BlitBitmapToWindow(WIN_CARD, (const u8 *)gLeagueCards_FrontGfx, 0, 0, CARD_PX_WIDTH, CARD_PX_HEIGHT);
 #else
     DrawCardBase(CARD_COLOR_FRONT, CARD_COLOR_FRONT_BORDER);
@@ -928,6 +944,7 @@ static void DrawCardBack(void)
     u32 fact;
 
 #if LEAGUE_CARDS_CUSTOM_GFX
+    FillWindowPixelBuffer(WIN_CARD, PIXEL_FILL(CARD_COLOR_TRANSPARENT));
     BlitBitmapToWindow(WIN_CARD, (const u8 *)gLeagueCards_BackGfx, 0, 0, CARD_PX_WIDTH, CARD_PX_HEIGHT);
 #else
     DrawCardBase(CARD_COLOR_BACK, CARD_COLOR_BACK_BORDER);
